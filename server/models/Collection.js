@@ -3,39 +3,35 @@ const _ = require('underscore');
 
 const setName = (name) => _.escape(name).trim();
 
-const DomoSchema = new mongoose.Schema({
+const CollectionSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         trim: true,
         set: setName,
     },
-    age: {
-        type: Number,
-        min: 0,
-        required: true,
-    },
-    color: {
+    description: {
         type: String,
-        required: true,
         trim: true,
+        default: '',
     },
     owner: {
         type: mongoose.Schema.ObjectId,
         required: true,
         ref: 'Account',
     },
-    createdData: {
+    createdDate: {
         type: Date,
         default: Date.now,
     },
 });
 
-DomoSchema.statics.toAPI = (doc) => ({
+// For sending clean Collection data to front-end
+CollectionSchema.statics.toAPI = (doc) => ({
     name: doc.name,
-    age: doc.age,
+    description: doc.description,
+    _id: doc._id,
 });
 
-const DomoModel = mongoose.model('Domo', DomoSchema);
-module.exports = DomoModel;
-
+const CollectionModel = mongoose.model('Collection', CollectionSchema);
+module.exports = CollectionModel;

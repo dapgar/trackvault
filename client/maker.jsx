@@ -3,60 +3,75 @@ const React = require('react');
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
 
-const handleDomo = (e, onDomoAdded) => {
+// 🎵 Handle creating a new Collection
+const handleCollection = (e, onCollectionAdded) => {
     e.preventDefault();
     helper.hideError();
 
-    const name = e.target.querySelector('#domoName').value;
-    const age = e.target.querySelector('#domoAge').value;
-    const color = e.target.querySelector('#domoColor').value;
+    const name = e.target.querySelector('#collectionName').value;
+    const description = e.target.querySelector('#collectionDescription').value;
 
-    if (!name || !age || !color) {
-        helper.handleError('All fields are required');
+    if (!name) {
+        helper.handleError('Collection name is required');
         return false;
     }
 
-    helper.sendPost(e.target.action, { name, age, color }, onDomoAdded);
+    helper.sendPost(e.target.action, { name, description }, onCollectionAdded);
     return false;
-}
+};
 
+// 🎶 Handle creating a new Song inside a collection
+const handleSong = (e, collectionId, onSongAdded) => {
+    e.preventDefault();
+    helper.hideError();
 
-const DomoForm = (props) => {
+    const title = e.target.querySelector('#songTitle').value;
+    const artist = e.target.querySelector('#songArtist').value;
+
+    if (!title || !artist) {
+        helper.handleError('Song title and artist are required');
+        return false;
+    }
+
+    helper.sendPost('/createSong', { title, artist, collectionId }, onSongAdded);
+    e.target.reset(); // Clear form after adding
+    return false;
+};
+
+// 📦 Collection creation form
+const CollectionForm = (props) => {
     return (
-        <form id="domoForm"
-            onSubmit={(e) => handleDomo(e, props.triggerReload)}
-            name="domoForm"
-            action="/maker"
-            className="domoForm"
+        <form id="collectionForm"
+            onSubmit={(e) => handleCollection(e, props.triggerReload)}
+            name="collectionForm"
+            action="/createCollection"
+            className="collectionForm"
         >
-            <label htmlFor="name">Name: </label>
-            <input id="domoName" type="text" name="name" placeholder="Domo Name" />
-            <label htmlFor="age">Age: </label>
-            <input id="domoAge" type="number" min="0" name="age" />
-            <label htmlFor="color">Color: </label>
-            <input id="domoColor" type="text" name="color" placeholder="Domo Color" />
-            <input className="makeDomoSubmit" type="submit" value="Make Domo" />
+            <label htmlFor="name">Collection Name: </label>
+            <input id="collectionName" type="text" name="name" placeholder="My 2024 Favorites" />
+            <label htmlFor="description">Description: </label>
+            <input id="collectionDescription" type="text" name="description" placeholder="Optional description" />
+            <input className="makeCollectionSubmit" type="submit" value="Create Collection" />
         </form>
     );
 };
 
-const DomoList = (props) => {
-    const [domos, setDomos] = useState(props.domos);
+const CollectionList = (props) => {
+    const { collections, setCollections, reloadCollections, selectCollection, triggerReloadCollections } = props;
 
-    const loadDomosFromServer = async () => {
-        const response = await fetch('/getDomos');
+    const loadCollectionsFromServer = async () => {
+        const response = await fetch('/getCollections');
         const data = await response.json();
-        setDomos(data.domos);
+        setCollections(data.collections);
     };
 
     useEffect(() => {
-        loadDomosFromServer();
-    }, [props.reloadDomos]);
+        loadCollectionsFromServer();
+    }, [reloadCollections]);
 
-    // Function to handle deleting a Domo
-    const handleDelete = async (id) => {
+    const handleDeleteCollection = async (id) => {
         try {
-            const response = await fetch(`/deleteDomo`, {
+            const response = await fetch('/deleteCollection', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,63 +80,162 @@ const DomoList = (props) => {
             });
 
             if (response.ok) {
-                loadDomosFromServer();
+                triggerReloadCollections(); // Tell App to reload collections
             } else {
-                console.error('Failed to delete domo');
+                console.error('Failed to delete collection');
             }
         } catch (error) {
-            console.error('Error deleting domo:', error);
+            console.error('Error deleting collection:', error);
         }
     };
 
-    if (domos.length === 0) {
+    if (collections.length === 0) {
         return (
-            <div className="domoList">
-                <h3 className="emptyDomo">No Domos Yet</h3>
+            <div className="collectionList">
+                <h3 className="emptyCollection">No Collections Yet</h3>
             </div>
         );
     }
 
-    const domoNodes = domos.map(domo => (
-        <div key={domo._id} className="domo">
-            <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
-            <h3 className="domoName">Name: {domo.name}</h3>
-            <h3 className="domoAge">Age: {domo.age}</h3>
-            <h3 className="domoColor">Color: {domo.color}</h3>
-            <button className="deleteButton" onClick={() => handleDelete(domo._id)}>Delete</button>
+    const collectionNodes = collections.map(collection => (
+        <div key={collection._id} className="collection">
+            <h3 className="collectionName" onClick={() => selectCollection(collection)}>{collection.name}</h3>
+            <p className="collectionDescription">{collection.description}</p>
+            <button className="deleteButton" onClick={() => handleDeleteCollection(collection._id)}>Delete Collection</button>
         </div>
     ));
 
     return (
-        <div className="domoList">
-            {domoNodes}
+        <div className="collectionList">
+            {collectionNodes}
         </div>
     );
 };
 
 
+// 🎵 SongForm to add songs
+const SongForm = (props) => {
+    const { collectionId, triggerReload } = props;
+
+    return (
+        <form id="songForm"
+            onSubmit={(e) => handleSong(e, collectionId, triggerReload)}
+            name="songForm"
+            className="songForm"
+        >
+            <label htmlFor="title">Song Title: </label>
+            <input id="songTitle" type="text" name="title" placeholder="Blinding Lights" />
+            <label htmlFor="artist">Artist: </label>
+            <input id="songArtist" type="text" name="artist" placeholder="The Weeknd" />
+            <input className="makeSongSubmit" type="submit" value="Add Song" />
+        </form>
+    );
+};
+
+// 🎶 SongList to display songs
+const SongList = (props) => {
+    const { collectionId, reloadSongs } = props;
+    const [songs, setSongs] = useState([]);
+
+    const loadSongsFromServer = async () => {
+        const response = await fetch(`/getSongs?collectionId=${collectionId}`);
+        const data = await response.json();
+        setSongs(data.songs);
+    };
+
+    useEffect(() => {
+        if (collectionId) {
+            loadSongsFromServer();
+        }
+    }, [collectionId, reloadSongs]);
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch('/deleteSong', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+
+            if (response.ok) {
+                loadSongsFromServer(); // Refresh songs after delete
+            } else {
+                console.error('Failed to delete song');
+            }
+        } catch (error) {
+            console.error('Error deleting song:', error);
+        }
+    };
+
+    if (songs.length === 0) {
+        return (
+            <div className="songList">
+                <h3 className="emptySong">No Songs Yet</h3>
+            </div>
+        );
+    }
+
+    const songNodes = songs.map((song) => (
+        <div key={song._id} className="song">
+            <h3 className="songTitle">{song.title}</h3>
+            <p className="songArtist">by {song.artist}</p>
+            <button className="deleteButton" onClick={() => handleDelete(song._id)}>Delete</button>
+        </div>
+    ));
+
+    return (
+        <div className="songList">
+            {songNodes}
+        </div>
+    );
+};
+
+// 🛠️ Main App
 const App = () => {
-    const [domos, setDomos] = useState([]);
-    const [reloadDomos, setReloadDomos] = useState(false);
+    const [collections, setCollections] = useState([]);
+    const [reloadCollections, setReloadCollections] = useState(false);
+    const [selectedCollection, setSelectedCollection] = useState(null);
+    const [reloadSongs, setReloadSongs] = useState(false);
+
+    if (selectedCollection) {
+        return (
+            <div>
+                <button onClick={() => setSelectedCollection(null)}>← Back to Collections</button>
+                <h2>{selectedCollection.name}</h2>
+                <p>{selectedCollection.description}</p>
+                <SongForm
+                    collectionId={selectedCollection._id}
+                    triggerReload={() => setReloadSongs(!reloadSongs)}
+                />
+                <SongList
+                    collectionId={selectedCollection._id}
+                    reloadSongs={reloadSongs}
+                />
+            </div>
+        );
+    }
 
     return (
         <div>
-            <div id="makeDomo">
-                <DomoForm triggerReload={() => setReloadDomos(!reloadDomos)} />
+            <div id="makeCollection">
+                <CollectionForm triggerReload={() => setReloadCollections(!reloadCollections)} />
             </div>
-            <div id="domos">
-                { }
-                <DomoList
-                    domos={domos}
-                    reloadDomos={reloadDomos}
-                    setDomos={setDomos}
+            <div id="collections">
+                <CollectionList
+                    collections={collections}
+                    setCollections={setCollections}
+                    reloadCollections={reloadCollections}
+                    triggerReloadCollections={() => setReloadCollections(!reloadCollections)}
+                    selectCollection={(collection) => setSelectedCollection(collection)}
                 />
             </div>
         </div>
     );
 };
 
-
+// Initialize App
 const init = () => {
     const root = createRoot(document.getElementById('app'));
     root.render(<App />);
