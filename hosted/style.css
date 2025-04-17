@@ -4,20 +4,22 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text */
 }
 
 #logo {
     height: 40px;
-    width: 40;
+    width: 40px;
     padding-top: 5px;
-    float:left;
+    float: left;
     border-radius: 8px;
 }
 
 nav {
     width: 100%;
     height: 50px;
-    background-color: #55acee;
+    background-color: #1f2a48; /* Dark blue-gray */
 }
 
 nav:nth-child(1) {
@@ -28,294 +30,51 @@ nav:nth-child(1) {
     padding: 5px;
     padding-top: 12px;
     padding-left: 20px;
-    color: white;
     font-size: 1.3em;
     float: left;
 }
 
 .navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
-    color: white;
+    color: #e0e0e0;
     text-decoration: none;
     padding: 5px;
     border-radius: 4px;
-    background-color: #55acee;
+    background-color: #1f2a48;
     transition: background-color 0.4s ease;
 }
 
 .navlink a:hover {
-    transition: background-color 0.8s ease;
-    background-color: #66bdff;
-}
-
-.domoForm {
-    border: 2px solid #338acc;
-    height: auto; /* Changed to auto to fit content */
-    width: 1000px;
-    margin-top: 0px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: #55acee;
-    border-bottom-right-radius: 4px;
-    border-top-right-radius: 4px;
-    display: flex;
-    flex-wrap: wrap; /* Allows the elements to wrap to the next line */
-}
-
-.domoForm label {
-    display: inline-block;
-    width: 75px;
-    margin-left: 10px;
-    font-size: 1.2em;
-    color: white;
-    border-radius: 4px;
-}
-
-.domoForm input[type=text] {
-    float: left;
-    margin-left: 10px;
-    font-size: 1.1em;
-    width: 200px; 
-}
-
-.makeDomoSubmit {
-    transition: background-color 0.4s ease;
-    display: inline;
-    width: 90px;
-    background-color: #55acee;
-    border-radius: 2px;
-    color: white;
-    text-decoration: none;
-}
-
-.makeDomoSubmit:link, .makeDomoSubmit:visited, .makeDomoSubmit:hover, .makeDomoSubmit:active {
-    color: white;
-}
-
-.makeDomoSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
-}
-
-.mainForm {
-    height: 300px;
-    width: 350px;
-    margin: 0 auto;
-    padding-top: 350px;
-    font-size: 1.2em;
-}
-
-.mainForm h3 {
-    text-align: center;
-}
-
-.mainForm label {
-    display: inline-block;
-    width: 100px;
-    margin-right: 10px;
-    text-align: right;
-    font-size: 1.2em;
-}
-
-.formSubmit {
-    transition: background-color 0.4s ease;
-    display: block;
-    text-align: center;
-    margin: 0 auto;
-    margin-top: 14px;
-    font-size: 1.2em;
-    width: 100px;
-    background-color: #55acee;
-    border-radius: 2px;
-    border-color: #66acee;
-    padding: 3px 0px;
-    color: white;
-    text-decoration: none;
-}
-
-.formSubmit:link, .formSubmit:visited, .formSubmit:hover, .formSubmit:active {
-    color: white;
-}
-
-.formSubmit:hover {
-    transition: background-color 0.4s ease;
-    background-color: #338acc;
-}
-
-#user, #pass, #pass2 {
-    text-align: center;
-    font-size: 1.1em;
-    width: 180px;
-    border-radius: 6px;
-}
-
-#user:focus, #pass:focus, #pass2:focus {
-    outline: none;
-    box-shadow: 0px 0px 1px 1px #55acee;
+    background-color: #3b73ff; /* Accent blue */
 }
 
 .hidden {
     display: none;
 }
 
-#domoMessage {
-    top: 250px;
-    width: 250px;
-    height: 650px;
-    position: absolute;
-    z-index: 200;
-    right: 0px;
-    overflow: hidden;
-}
+/* ---------- Collection and Song Cards ---------- */
 
-#domoMessage h3 {
-    width: 200px;
-    position: absolute;
-    top: 0px;
-    left: 20px;
-}
-
-#speech {
-    height: 120px;
-    width: 250px;
-    z-index:300;
-}
-
-#errorMessage {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: red;
-    font-style: italic;
-}
-
-#domo {
-    z-index: 225;
-    margin-top: -20px;
-    margin-left: 135px;
-    height: 450px;
-    width: 300px;
-    -ms-transform: rotate(330deg);
-    -webkit-transform: rotate(330deg); 
-    transform: rotate(330deg);
-}
-
-#domos {
-    width: 40%;
-    min-width: 400px;
-    border: 2px solid #55acee;
-    border-radius: 4px;
-    margin: 0 auto;
-    margin-top: 100px;
-}
-
-.domo {
-    width: 95%;
-    margin: 0 auto;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    border: 2px solid #55acee;
-    border-radius: 4px;
-    background-color: #55acee;
-    padding: 10px;
-    min-height:60px;
-    overflow: hidden;
-}
-
-.domo:hover {
-    transition: border-color 0.2s ease-out;
-    border-color: rgba(255,255,255, 0.8);
-    transition: background-color 2.6s ease-out;
-    background-color: #66bfff;
-}
-
-img.domoFace {
-    margin-left: 25px;
-    margin-right: 10px;
-    height: 50px;
-    width: 50px;
-    border-radius: 4px;
-    margin-top:10px;
-    float:left;
-}
-
-h3.emptyDomo {
-    width: 400px;
-    font-size: 1.5em;
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 18px;
-}
-
-h3.domoName {
-    float:left;
-    width: 200px;
-    font-weight: bold;
-    padding-left: 65px;
-    font-size: 1.5em;
-}
-
-h3.domoAge {
-    float:right;
-    text-align: left;
-    width: 100px;
-    font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
-}
-
-h3.domoColor {
-    font-weight: bold;
-    font-size: 1.5em;
-}
-
-.deleteButton {
-    background-color: #e74c3c; 
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: background-color 0.3s ease;
-    float: right;
-}
-
-.deleteButton:hover {
-    background-color: #c0392b; 
-}
-
-.domo:first-child {
-    margin-top: 10px;
-}
-
-.domo:last-child {
-    margin-bottom:10px;
-}
-
-/* General "card" bubble style */
 .collection, .song {
     width: 90%;
     margin: 15px auto;
     padding: 20px;
-    background-color: #55acee;
-    border: 2px solid #338acc;
+    background-color: #1f2a48; /* Card background */
+    border: 2px solid #3b73ff; /* Accent border */
     border-radius: 12px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-/* Hover effect */
 .collection:hover, .song:hover {
-    background-color: #66bdff;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+    background-color: #2a3658; /* Slightly lighter on hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
+    transform: translateY(-4px); /* Subtle lift on hover */
 }
 
-/* Specific tweaks for Collections */
 .collection {
     cursor: pointer;
 }
 
-/* Collection title (bigger) */
+/* Collection title */
 .collectionName {
     font-size: 1.8em;
     font-weight: bold;
@@ -326,19 +85,116 @@ h3.domoColor {
 /* Collection description */
 .collectionDescription {
     font-size: 1.2em;
-    color: #e8f4fc;
+    color: #c7d2e3;
 }
 
-/* Song title (medium size) */
+/* ---------- Song Layout (New Style) ---------- */
+
+.songContent {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.albumArt {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.songText {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Song title */
 .songTitle {
-    font-size: 1.5em;
+    font-size: 1.4em;
     font-weight: bold;
     color: white;
+    margin: 0;
 }
 
 /* Song artist */
 .songArtist {
+    font-size: 1.1em;
+    color: #c7d2e3;
+    margin-top: 4px;
+}
+
+/* Delete Button */
+.deleteButton {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+    background-color: #c0392b;
+}
+
+/* ---------- Forms ---------- */
+
+.domoForm, .collectionForm, .songForm {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #3b73ff;
+    border-radius: 12px;
+    background-color: #1f2a48;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.domoForm label, .collectionForm label, .songForm label {
     font-size: 1.2em;
-    color: #e8f4fc;
-    margin-top: 5px;
+    color: #e0e0e0;
+    width: 100%;
+}
+
+.domoForm input[type=text],
+.collectionForm input[type=text],
+.songForm input[type=text] {
+    font-size: 1em;
+    padding: 8px;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #3b73ff;
+    background-color: #2a3658;
+    color: #e0e0e0;
+}
+
+.makeDomoSubmit, .makeSongSubmit, .formSubmit {
+    transition: background-color 0.4s ease;
+    background-color: #3b73ff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 1.1em;
+    padding: 8px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.makeDomoSubmit:hover, .makeSongSubmit:hover, .formSubmit:hover {
+    background-color: #5c8dff;
+}
+
+/* Empty messages */
+h3.emptyCollection, h3.emptySong, h3.emptyDomo {
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 20px;
+    color: #c7d2e3;
 }

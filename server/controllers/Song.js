@@ -1,25 +1,26 @@
 const models = require('../models');
 const Song = models.Song;
 
-// Create a new Song
 const createSong = async (req, res) => {
     if (!req.body.title || !req.body.artist || !req.body.collectionId) {
         return res.status(400).json({ error: 'Title, artist, and collection ID are required' });
     }
 
-    const songData = {
-        title: req.body.title,
-        artist: req.body.artist,
-        collectionId: req.body.collectionId,
-        owner: req.session.account._id,
-    };
-
     try {
+        const songData = {
+            title: req.body.title,
+            artist: req.body.artist,
+            albumArt: req.body.albumArt || '', // Accept albumArt sent from frontend
+            collectionId: req.body.collectionId,
+            owner: req.session.account._id,
+        };
+
         const newSong = new Song(songData);
         await newSong.save();
         return res.status(201).json({
             title: newSong.title,
             artist: newSong.artist,
+            albumArt: newSong.albumArt,
             _id: newSong._id,
             collectionId: newSong.collectionId,
         });
@@ -28,6 +29,7 @@ const createSong = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred creating the song!' });
     }
 };
+
 
 // Get all Songs for a given Collection
 const getSongsForCollection = async (req, res) => {
@@ -42,7 +44,8 @@ const getSongsForCollection = async (req, res) => {
             collectionId: collectionId,
         };
 
-        const docs = await Song.find(query).select('title artist collectionId').lean().exec();
+        // 🔥 FIX: Add albumArt to what you select
+        const docs = await Song.find(query).select('title artist albumArt collectionId').lean().exec();
 
         return res.json({ songs: docs });
     } catch (err) {

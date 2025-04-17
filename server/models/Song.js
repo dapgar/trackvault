@@ -17,6 +17,10 @@ const SongSchema = new mongoose.Schema({
         trim: true,
         set: setArtist,
     },
+    albumArt: {
+        type: String,
+        default: '',
+    },
     collectionId: {
         type: mongoose.Schema.ObjectId,
         required: true,
@@ -37,6 +41,7 @@ const SongSchema = new mongoose.Schema({
 SongSchema.statics.toAPI = (doc) => ({
     title: doc.title,
     artist: doc.artist,
+    albumArt: doc.albumArt,
     _id: doc._id,
     collectionId: doc.collectionId,
 });

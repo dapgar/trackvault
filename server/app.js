@@ -33,7 +33,19 @@ redisClient.on('erorr', err => console.log('Redis Client Error', err));
 redisClient.connect().then(() => {
     const app = express();
 
-    app.use(helmet());
+    app.use(helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: ["'self'"],
+                styleSrc: ["'self'", "'unsafe-inline'"],
+                imgSrc: ["'self'", "data:", "https://is1-ssl.mzstatic.com"],
+                connectSrc: ["'self'", "https://itunes.apple.com"],
+                fontSrc: ["'self'"],
+            },
+        },
+    }));
+    
     app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
     app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
     app.use(compression());

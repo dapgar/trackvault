@@ -20,8 +20,7 @@ const handleCollection = (e, onCollectionAdded) => {
     return false;
 };
 
-// 🎶 Handle creating a new Song inside a collection
-const handleSong = (e, collectionId, onSongAdded) => {
+const handleSong = async (e, collectionId, onSongAdded) => {
     e.preventDefault();
     helper.hideError();
 
@@ -33,10 +32,33 @@ const handleSong = (e, collectionId, onSongAdded) => {
         return false;
     }
 
-    helper.sendPost('/createSong', { title, artist, collectionId }, onSongAdded);
-    e.target.reset(); // Clear form after adding
+    // Fetch album art from iTunes
+    const searchTerm = encodeURIComponent(`${title} ${artist}`);
+    const url = `https://itunes.apple.com/search?term=${searchTerm}&entity=song&limit=1`;
+
+    let albumArt = '';
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.results && data.results.length > 0) {
+            albumArt = data.results[0].artworkUrl100.replace('100x100', '600x600');
+        }
+    } catch (err) {
+        console.error('Error fetching album art:', err);
+    }
+
+    // ✨ Set default placeholder if no album art found
+    if (!albumArt) {
+        albumArt = '/assets/img/placeholder.png'; // Make sure you have this file!
+    }
+
+    helper.sendPost('/createSong', { title, artist, albumArt, collectionId }, onSongAdded);
+    e.target.reset();
     return false;
 };
+
 
 // 📦 Collection creation form
 const CollectionForm = (props) => {
@@ -140,8 +162,10 @@ const SongList = (props) => {
     const loadSongsFromServer = async () => {
         const response = await fetch(`/getSongs?collectionId=${collectionId}`);
         const data = await response.json();
+        console.log('Songs loaded:', data.songs); // <--- ADD THIS
         setSongs(data.songs);
     };
+
 
     useEffect(() => {
         if (collectionId) {
@@ -179,11 +203,19 @@ const SongList = (props) => {
 
     const songNodes = songs.map((song) => (
         <div key={song._id} className="song">
-            <h3 className="songTitle">{song.title}</h3>
-            <p className="songArtist">by {song.artist}</p>
-            <button className="deleteButton" onClick={() => handleDelete(song._id)}>Delete</button>
+            <div className="songContent">
+                <img src={song.albumArt} alt={`${song.title} cover`} className="albumArt" />
+                <div className="songText">
+                    <h3 className="songTitle">{song.title}</h3>
+                    <p className="songArtist">by {song.artist}</p>
+                </div>
+                <button className="deleteButton" onClick={() => handleDelete(song._id)}>Delete</button>
+            </div>
         </div>
     ));
+    
+
+
 
     return (
         <div className="songList">
