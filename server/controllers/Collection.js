@@ -10,6 +10,8 @@ const createCollection = async (req, res) => {
     const collectionData = {
         name: req.body.name,
         description: req.body.description || '',
+        bgColor: req.body.bgColor || '#1f2a48',     // Default if not provided
+        borderColor: req.body.borderColor || '#3b73ff', // Default if not provided
         owner: req.session.account._id,
     };
 
@@ -19,6 +21,8 @@ const createCollection = async (req, res) => {
         return res.status(201).json({
             name: newCollection.name,
             description: newCollection.description,
+            bgColor: newCollection.bgColor,
+            borderColor: newCollection.borderColor,
             _id: newCollection._id,
         });
     } catch (err) {
@@ -34,7 +38,8 @@ const createCollection = async (req, res) => {
 const getCollections = async (req, res) => {
     try {
         const query = { owner: req.session.account._id };
-        const docs = await Collection.find(query).select('name description').lean().exec();
+        const docs = await Collection.find(query).select('name description bgColor borderColor').lean().exec();
+        // ⭐ Also pull colors when getting collections
 
         return res.json({ collections: docs });
     } catch (err) {
@@ -61,14 +66,45 @@ const deleteCollection = async (req, res) => {
     }
 };
 
-// Just renders app (for now, frontend handles logic)
+// Edit a Collection
+const editCollection = async (req, res) => {
+    try {
+        const { id, name, description, bgColor, borderColor } = req.body;
+
+        if (!id || !name) {
+            return res.status(400).json({ error: 'Collection ID and new name are required!' });
+        }
+
+        const updated = await Collection.updateOne(
+            { _id: id, owner: req.session.account._id },
+            { $set: { name, description, bgColor, borderColor } }
+        );
+
+        if (updated.matchedCount === 0) {
+            return res.status(404).json({ error: 'Collection not found or unauthorized' });
+        }
+
+        return res.status(200).json({ message: 'Collection updated successfully' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'An error occurred while editing the collection' });
+    }
+};
+
+
+
+// Just renders app (frontend handles logic)
 const makerPage = async (req, res) => {
     return res.render('app');
 };
+
+
+// (Editing collections stays the same for now)
 
 module.exports = {
     makerPage,
     createCollection,
     getCollections,
     deleteCollection,
+    editCollection,
 };

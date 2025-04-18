@@ -8,9 +8,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     background-color: #121212;
-    /* Dark background */
     color: #e0e0e0;
-    /* Light text */
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -73,7 +71,6 @@ nav {
     width: 320px;
     padding: 30px 20px;
     margin: 80px auto;
-    /* Center on screen */
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -116,7 +113,6 @@ nav {
 
 /* ---------- Collection and Song Cards ---------- */
 
-.collection,
 .song {
     background-color: #1f2a48;
     border: 2px solid #3b73ff;
@@ -125,21 +121,42 @@ nav {
     transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-.collection:hover,
 .song:hover {
     background-color: #2a3658;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
     transform: translateY(-4px);
 }
 
-/* ---------- Collections ---------- */
-
 .collection {
-    width: 90%;
-    margin: 15px auto;
+    background-color: #1f2a48; /* Always dark background */
+    border: 2px solid var(--collection-border, #3b73ff); /* Border is customizable */
+    border-radius: 12px;
     padding: 20px;
-    cursor: pointer;
+    margin: 15px auto;
+    width: 90%;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
+
+.collection:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Color Pickers inside edit forms */
+.colorPickers {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.colorPickers label {
+    font-size: 1em;
+    color: #e0e0e0;
+}
+
+/* ---------- Collections ---------- */
 
 .collectionName {
     font-size: 1.8em;
@@ -208,6 +225,8 @@ nav {
     margin-top: 4px;
 }
 
+/* Buttons for delete/edit/save */
+
 .deleteButton {
     background-color: #e74c3c;
     color: white;
@@ -225,7 +244,24 @@ nav {
     background-color: #c0392b;
 }
 
-/* ---------- Forms (Other) ---------- */
+.editButton, .saveButton, .cancelButton {
+    margin-top: 6px;
+    margin-right: 5px;
+    background-color: #3b73ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.editButton:hover, .saveButton:hover, .cancelButton:hover {
+    background-color: #5c8dff;
+}
+
+/* ---------- Forms (Other Forms) ---------- */
 
 .collectionForm,
 .songForm {
@@ -235,16 +271,18 @@ nav {
     border: 2px solid #3b73ff;
     border-radius: 12px;
     background-color: #1f2a48;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px 20px;
+    align-items: center;
 }
 
 .collectionForm label,
 .songForm label {
     font-size: 1.2em;
     color: #e0e0e0;
-    width: 100%;
+    text-align: right;
+    margin-right: 10px;
 }
 
 .collectionForm input[type=text],
@@ -270,6 +308,8 @@ nav {
     padding: 8px 16px;
     margin-top: 10px;
     cursor: pointer;
+    grid-column: span 2;
+    justify-self: center;
 }
 
 #backToCollectionsButton {
@@ -291,6 +331,8 @@ h3.emptySong {
     color: #c7d2e3;
 }
 
+/* ---------- Welcome Message ---------- */
+
 #welcomeSection {
     width: 60%;
     margin: 20px auto;
@@ -308,21 +350,31 @@ h3.emptySong {
     margin-bottom: 20px;
 }
 
+/* ---------- Error Text ---------- */
+
 .errorText {
     color: #e74c3c;
-    /* Red */
     font-weight: bold;
     margin-top: 10px;
     text-align: center;
     font-size: 1.1em;
-
     opacity: 0;
-    /* 🔥 Start hidden */
     transition: opacity 0.4s ease;
-    /* 🔥 Smooth transition */
 }
 
 .errorText.show {
     opacity: 1;
-    /* 🔥 Fade in */
+}
+
+/* ======== Edit Input Styles ======== */
+
+.editInput {
+    width: 90%;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #3b73ff;
+    background-color: #2a3658;
+    color: #e0e0e0;
+    font-size: 1em;
 }

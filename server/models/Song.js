@@ -1,23 +1,25 @@
 const mongoose = require('mongoose');
 const _ = require('underscore');
 
-const setTitle = (title) => _.escape(title).trim();
-const setArtist = (artist) => _.escape(artist).trim();
+const setName = (name) => _.escape(name).trim();
 
 const SongSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
         trim: true,
-        set: setTitle,
+        set: setName,
     },
     artist: {
         type: String,
         required: true,
         trim: true,
-        set: setArtist,
     },
     albumArt: {
+        type: String,
+        default: '',
+    },
+    duration: {
         type: String,
         default: '',
     },
@@ -35,19 +37,22 @@ const SongSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    duration: { 
-        type: String, default: '' 
+    borderColor: {
+        type: String,
+        default: '#3b73ff', // 🔥 default border color
     },
 });
 
-// For sending clean Song data to front-end
 SongSchema.statics.toAPI = (doc) => ({
     title: doc.title,
     artist: doc.artist,
     albumArt: doc.albumArt,
+    duration: doc.duration,
     _id: doc._id,
     collectionId: doc.collectionId,
+    borderColor: doc.borderColor, // 🔥 add this too
 });
 
 const SongModel = mongoose.model('Song', SongSchema);
+
 module.exports = SongModel;

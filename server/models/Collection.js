@@ -15,6 +15,10 @@ const CollectionSchema = new mongoose.Schema({
         trim: true,
         default: '',
     },
+    borderColor: {
+        type: String,
+        default: '#3b73ff', // Default blue accent
+    },
     owner: {
         type: mongoose.Schema.ObjectId,
         required: true,
@@ -26,10 +30,11 @@ const CollectionSchema = new mongoose.Schema({
     },
 });
 
-// For sending clean Collection data to front-end
 CollectionSchema.statics.toAPI = (doc) => ({
     name: doc.name,
     description: doc.description,
+    bgColor: doc.bgColor,
+    borderColor: doc.borderColor,
     _id: doc._id,
 });
 

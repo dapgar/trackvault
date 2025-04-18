@@ -10,8 +10,9 @@ const createSong = async (req, res) => {
         const songData = {
             title: req.body.title,
             artist: req.body.artist,
-            albumArt: req.body.albumArt || '', 
-            duration: req.body.duration || '', // 🎵 Accept and store duration!
+            albumArt: req.body.albumArt || '',
+            duration: req.body.duration || '',
+            borderColor: req.body.borderColor || '#3b73ff', // ✨ NEW
             collectionId: req.body.collectionId,
             owner: req.session.account._id,
         };
@@ -23,7 +24,8 @@ const createSong = async (req, res) => {
             title: newSong.title,
             artist: newSong.artist,
             albumArt: newSong.albumArt,
-            duration: newSong.duration, // 🎵 Include it in response too
+            duration: newSong.duration,
+            borderColor: newSong.borderColor, // ✨ Return border color too
             _id: newSong._id,
             collectionId: newSong.collectionId,
         });
@@ -32,6 +34,7 @@ const createSong = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred creating the song!' });
     }
 };
+
 
 // Get all Songs for a given Collection
 const getSongsForCollection = async (req, res) => {
@@ -46,7 +49,7 @@ const getSongsForCollection = async (req, res) => {
             collectionId: collectionId,
         };
 
-        const docs = await Song.find(query).select('title artist albumArt duration collectionId').lean().exec();
+        const docs = await Song.find(query).select('title artist albumArt duration collectionId borderColor').lean().exec();
 
         return res.json({ songs: docs });
     } catch (err) {
@@ -73,8 +76,34 @@ const deleteSong = async (req, res) => {
     }
 };
 
+const editSong = async (req, res) => {
+    try {
+        const { id, title, artist, albumArt, duration, borderColor } = req.body;
+
+        if (!id || !title || !artist) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        const updated = await Song.updateOne(
+            { _id: id, owner: req.session.account._id },
+            { $set: { title, artist, albumArt, duration, borderColor } }
+        );
+
+        if (updated.matchedCount === 0) {
+            return res.status(404).json({ error: 'Song not found or unauthorized' });
+        }
+
+        return res.status(200).json({ message: 'Song updated successfully' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error updating song' });
+    }
+};
+
+
 module.exports = {
     createSong,
     getSongsForCollection,
     deleteSong,
+    editSong,
 };
