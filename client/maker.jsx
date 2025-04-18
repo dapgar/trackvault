@@ -32,51 +32,67 @@ const handleSong = async (e, collectionId, onSongAdded) => {
         return false;
     }
 
-    // Fetch album art from iTunes
+    // Fetch album art and duration from iTunes
     const searchTerm = encodeURIComponent(`${title} ${artist}`);
     const url = `https://itunes.apple.com/search?term=${searchTerm}&entity=song&limit=1`;
 
     let albumArt = '';
+    let duration = '';
 
     try {
         const response = await fetch(url);
         const data = await response.json();
 
         if (data.results && data.results.length > 0) {
-            albumArt = data.results[0].artworkUrl100.replace('100x100', '600x600');
+            const result = data.results[0];
+            albumArt = result.artworkUrl100.replace('100x100', '600x600');
+
+            // 🎵 Calculate duration (minutes:seconds)
+            if (result.trackTimeMillis) {
+                const minutes = Math.floor(result.trackTimeMillis / 60000);
+                const seconds = Math.floor((result.trackTimeMillis % 60000) / 1000);
+                duration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
         }
     } catch (err) {
-        console.error('Error fetching album art:', err);
+        console.error('Error fetching album art or duration:', err);
     }
 
     // ✨ Set default placeholder if no album art found
     if (!albumArt) {
-        albumArt = '/assets/img/placeholder.png'; // Make sure you have this file!
+        albumArt = '/assets/img/placeholder.png'; // Local placeholder image
     }
 
-    helper.sendPost('/createSong', { title, artist, albumArt, collectionId }, onSongAdded);
+    // Send song info including albumArt AND duration
+    helper.sendPost('/createSong', { title, artist, albumArt, duration, collectionId }, onSongAdded);
+
     e.target.reset();
     return false;
 };
 
 
-// 📦 Collection creation form
 const CollectionForm = (props) => {
     return (
-        <form id="collectionForm"
-            onSubmit={(e) => handleCollection(e, props.triggerReload)}
-            name="collectionForm"
-            action="/createCollection"
-            className="collectionForm"
-        >
-            <label htmlFor="name">Collection Name: </label>
-            <input id="collectionName" type="text" name="name" placeholder="My 2024 Favorites" />
-            <label htmlFor="description">Description: </label>
-            <input id="collectionDescription" type="text" name="description" placeholder="Optional description" />
-            <input className="makeCollectionSubmit" type="submit" value="Create Collection" />
-        </form>
+        <div>
+            <form id="collectionForm"
+                onSubmit={(e) => handleCollection(e, props.triggerReload)}
+                name="collectionForm"
+                action="/createCollection"
+                className="collectionForm"
+            >
+                <label htmlFor="name">Collection Name: </label>
+                <input id="collectionName" type="text" name="name" placeholder="My 2025 Favorites" />
+                <label htmlFor="description">Description: </label>
+                <input id="collectionDescription" type="text" name="description" placeholder="Optional description" />
+                <input className="makeCollectionSubmit" type="submit" value="Create Collection" />
+            </form>
+
+            {/* 🌟 New Error Display */}
+            <p id="errorMessage" className="errorText hidden"></p>
+        </div>
     );
 };
+
 
 const CollectionList = (props) => {
     const { collections, setCollections, reloadCollections, selectCollection, triggerReloadCollections } = props;
@@ -135,24 +151,29 @@ const CollectionList = (props) => {
 };
 
 
-// 🎵 SongForm to add songs
 const SongForm = (props) => {
     const { collectionId, triggerReload } = props;
 
     return (
-        <form id="songForm"
-            onSubmit={(e) => handleSong(e, collectionId, triggerReload)}
-            name="songForm"
-            className="songForm"
-        >
-            <label htmlFor="title">Song Title: </label>
-            <input id="songTitle" type="text" name="title" placeholder="Blinding Lights" />
-            <label htmlFor="artist">Artist: </label>
-            <input id="songArtist" type="text" name="artist" placeholder="The Weeknd" />
-            <input className="makeSongSubmit" type="submit" value="Add Song" />
-        </form>
+        <div>
+            <form id="songForm"
+                onSubmit={(e) => handleSong(e, collectionId, triggerReload)}
+                name="songForm"
+                className="songForm"
+            >
+                <label htmlFor="title">Song Title: </label>
+                <input id="songTitle" type="text" name="title" placeholder="Blinding Lights" />
+                <label htmlFor="artist">Artist: </label>
+                <input id="songArtist" type="text" name="artist" placeholder="The Weeknd" />
+                <input className="makeSongSubmit" type="submit" value="Add Song" />
+            </form>
+
+            {/* 🌟 New Error Display */}
+            <p id="errorMessage" className="errorText hidden"></p>
+        </div>
     );
 };
+
 
 // 🎶 SongList to display songs
 const SongList = (props) => {
@@ -162,10 +183,8 @@ const SongList = (props) => {
     const loadSongsFromServer = async () => {
         const response = await fetch(`/getSongs?collectionId=${collectionId}`);
         const data = await response.json();
-        console.log('Songs loaded:', data.songs); // <--- ADD THIS
         setSongs(data.songs);
     };
-
 
     useEffect(() => {
         if (collectionId) {
@@ -208,18 +227,20 @@ const SongList = (props) => {
                 <div className="songText">
                     <h3 className="songTitle">{song.title}</h3>
                     <p className="songArtist">by {song.artist}</p>
+                    {song.duration && (
+                        <p className="songDuration">{song.duration}</p> // <-- Show duration
+                    )}
+                    <button className="deleteButton" onClick={() => handleDelete(song._id)}>Delete</button>
                 </div>
-                <button className="deleteButton" onClick={() => handleDelete(song._id)}>Delete</button>
             </div>
         </div>
     ));
-    
-
-
 
     return (
         <div className="songList">
-            {songNodes}
+            <div className="songGrid">
+                {songNodes}
+            </div>
         </div>
     );
 };
@@ -230,11 +251,26 @@ const App = () => {
     const [reloadCollections, setReloadCollections] = useState(false);
     const [selectedCollection, setSelectedCollection] = useState(null);
     const [reloadSongs, setReloadSongs] = useState(false);
+    const [username, setUsername] = useState(''); // 🌟 NEW: username state
+
+    const getUsername = async () => {
+        try {
+            const response = await fetch('/getUsername'); // 🌟 NEW API endpoint
+            const data = await response.json();
+            setUsername(data.username);
+        } catch (err) {
+            console.error('Failed to fetch username:', err);
+        }
+    };
+
+    useEffect(() => {
+        getUsername(); // 🌟 On first load, grab username
+    }, []);
 
     if (selectedCollection) {
         return (
             <div>
-                <button onClick={() => setSelectedCollection(null)}>← Back to Collections</button>
+                <button id="backToCollectionsButton" onClick={() => setSelectedCollection(null)}>← Back to Collections</button>
                 <h2>{selectedCollection.name}</h2>
                 <p>{selectedCollection.description}</p>
                 <SongForm
@@ -251,6 +287,9 @@ const App = () => {
 
     return (
         <div>
+            <div id="welcomeSection">
+                {username && <h1 className="welcomeMessage">Welcome, {username}!</h1>}
+            </div>
             <div id="makeCollection">
                 <CollectionForm triggerReload={() => setReloadCollections(!reloadCollections)} />
             </div>

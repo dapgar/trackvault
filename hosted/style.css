@@ -1,12 +1,25 @@
-html, body {
+/* ---------- General Page Setup ---------- */
+
+html,
+body {
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    background-color: #121212; /* Dark background */
-    color: #e0e0e0; /* Light text */
+    background-color: #121212;
+    /* Dark background */
+    color: #e0e0e0;
+    /* Light text */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+h2,
+p {
+    margin-left: 10px;
+}
+
+/* Logo and Navigation */
 
 #logo {
     height: 40px;
@@ -19,62 +32,115 @@ html, body {
 nav {
     width: 100%;
     height: 50px;
-    background-color: #1f2a48; /* Dark blue-gray */
-}
-
-nav:nth-child(1) {
-    padding-left: 25px;
+    background-color: #1f2a48;
 }
 
 .navlink {
-    padding: 5px;
+    padding: 5px 20px;
     padding-top: 12px;
-    padding-left: 20px;
     font-size: 1.3em;
     float: left;
 }
 
-.navlink a, .navlink a:link, .navlink a:visited, .navlink a:hover, .navlink a:active {
+.navlink a,
+.navlink a:link,
+.navlink a:visited,
+.navlink a:hover,
+.navlink a:active {
     color: #e0e0e0;
     text-decoration: none;
-    padding: 5px;
     border-radius: 4px;
     background-color: #1f2a48;
     transition: background-color 0.4s ease;
+    padding: 5px;
 }
 
 .navlink a:hover {
-    background-color: #3b73ff; /* Accent blue */
+    background-color: #3b73ff;
 }
 
 .hidden {
     display: none;
 }
 
+/* ---------- Main Forms (Login/Signup Centered Card) ---------- */
+
+.mainForm {
+    background-color: #1f2a48;
+    border: 2px solid #3b73ff;
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+    width: 320px;
+    padding: 30px 20px;
+    margin: 80px auto;
+    /* Center on screen */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+}
+
+.mainForm label {
+    font-size: 1.2em;
+    color: #e0e0e0;
+    text-align: left;
+    margin-left: 5px;
+}
+
+.mainForm input[type=text],
+.mainForm input[type=password] {
+    font-size: 1em;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #3b73ff;
+    background-color: #2a3658;
+    color: #e0e0e0;
+    width: 100%;
+}
+
+.formSubmit {
+    transition: background-color 0.4s ease;
+    background-color: #3b73ff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 1.1em;
+    padding: 10px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.formSubmit:hover {
+    background-color: #5c8dff;
+}
+
 /* ---------- Collection and Song Cards ---------- */
 
-.collection, .song {
-    width: 90%;
-    margin: 15px auto;
-    padding: 20px;
-    background-color: #1f2a48; /* Card background */
-    border: 2px solid #3b73ff; /* Accent border */
+.collection,
+.song {
+    background-color: #1f2a48;
+    border: 2px solid #3b73ff;
     border-radius: 12px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
     transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
-.collection:hover, .song:hover {
-    background-color: #2a3658; /* Slightly lighter on hover */
+.collection:hover,
+.song:hover {
+    background-color: #2a3658;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
-    transform: translateY(-4px); /* Subtle lift on hover */
+    transform: translateY(-4px);
 }
 
+/* ---------- Collections ---------- */
+
 .collection {
+    width: 90%;
+    margin: 15px auto;
+    padding: 20px;
     cursor: pointer;
 }
 
-/* Collection title */
 .collectionName {
     font-size: 1.8em;
     font-weight: bold;
@@ -82,51 +148,66 @@ nav:nth-child(1) {
     margin-bottom: 10px;
 }
 
-/* Collection description */
 .collectionDescription {
     font-size: 1.2em;
     color: #c7d2e3;
 }
 
-/* ---------- Song Layout (New Style) ---------- */
+/* ---------- Songs Grid and Cards ---------- */
+
+.songGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    padding: 10px;
+}
+
+.song {
+    width: 100%;
+    max-width: 220px;
+    margin: 0;
+    padding: 15px;
+}
 
 .songContent {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 }
 
 .albumArt {
-    width: 80px;
-    height: 80px;
-    border-radius: 8px;
+    width: 100%;
+    height: 180px;
     object-fit: cover;
+    border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .songText {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    text-align: center;
 }
 
-/* Song title */
 .songTitle {
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: bold;
     color: white;
     margin: 0;
 }
 
-/* Song artist */
 .songArtist {
-    font-size: 1.1em;
+    font-size: 1em;
     color: #c7d2e3;
     margin-top: 4px;
 }
 
-/* Delete Button */
+.songDuration {
+    font-size: 0.9em;
+    color: #aab8d4;
+    margin-top: 4px;
+}
+
 .deleteButton {
     background-color: #e74c3c;
     color: white;
@@ -137,15 +218,17 @@ nav:nth-child(1) {
     cursor: pointer;
     white-space: nowrap;
     transition: background-color 0.3s ease;
+    margin-top: 8px;
 }
 
 .deleteButton:hover {
     background-color: #c0392b;
 }
 
-/* ---------- Forms ---------- */
+/* ---------- Forms (Other) ---------- */
 
-.domoForm, .collectionForm, .songForm {
+.collectionForm,
+.songForm {
     width: 90%;
     margin: 20px auto;
     padding: 20px;
@@ -157,13 +240,13 @@ nav:nth-child(1) {
     gap: 10px;
 }
 
-.domoForm label, .collectionForm label, .songForm label {
+.collectionForm label,
+.songForm label {
     font-size: 1.2em;
     color: #e0e0e0;
     width: 100%;
 }
 
-.domoForm input[type=text],
 .collectionForm input[type=text],
 .songForm input[type=text] {
     font-size: 1em;
@@ -175,7 +258,9 @@ nav:nth-child(1) {
     color: #e0e0e0;
 }
 
-.makeDomoSubmit, .makeSongSubmit, .formSubmit {
+.makeSongSubmit,
+.makeCollectionSubmit,
+#backToCollectionsButton {
     transition: background-color 0.4s ease;
     background-color: #3b73ff;
     border: none;
@@ -187,14 +272,57 @@ nav:nth-child(1) {
     cursor: pointer;
 }
 
-.makeDomoSubmit:hover, .makeSongSubmit:hover, .formSubmit:hover {
+#backToCollectionsButton {
+    margin-left: 10px;
+}
+
+.makeSongSubmit:hover,
+.makeCollectionSubmit:hover {
     background-color: #5c8dff;
 }
 
-/* Empty messages */
-h3.emptyCollection, h3.emptySong, h3.emptyDomo {
+/* ---------- Empty Messages ---------- */
+
+h3.emptyCollection,
+h3.emptySong {
     text-align: center;
     font-size: 1.5em;
     margin-top: 20px;
     color: #c7d2e3;
+}
+
+#welcomeSection {
+    width: 60%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.welcomeMessage {
+    font-size: 2em;
+    font-weight: bold;
+    color: #ffffff;
+    outline-style: ridge;
+    outline-color: #3b73ff;
+    background-color: #2a3658;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.errorText {
+    color: #e74c3c;
+    /* Red */
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1.1em;
+
+    opacity: 0;
+    /* 🔥 Start hidden */
+    transition: opacity 0.4s ease;
+    /* 🔥 Smooth transition */
+}
+
+.errorText.show {
+    opacity: 1;
+    /* 🔥 Fade in */
 }

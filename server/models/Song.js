@@ -35,6 +35,9 @@ const SongSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    duration: { 
+        type: String, default: '' 
+    },
 });
 
 // For sending clean Song data to front-end

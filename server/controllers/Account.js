@@ -57,9 +57,19 @@ const signup = async (req, res) => {
     }
 };
 
+const getUsername = (req, res) => {
+    if (!req.session.account) {
+        return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    return res.json({ username: req.session.account.username });
+};
+
+
 module.exports = {
     loginPage,
     login,
     logout,
     signup,
+    getUsername,
 };

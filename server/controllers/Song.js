@@ -10,17 +10,20 @@ const createSong = async (req, res) => {
         const songData = {
             title: req.body.title,
             artist: req.body.artist,
-            albumArt: req.body.albumArt || '', // Accept albumArt sent from frontend
+            albumArt: req.body.albumArt || '', 
+            duration: req.body.duration || '', // 🎵 Accept and store duration!
             collectionId: req.body.collectionId,
             owner: req.session.account._id,
         };
 
         const newSong = new Song(songData);
         await newSong.save();
+
         return res.status(201).json({
             title: newSong.title,
             artist: newSong.artist,
             albumArt: newSong.albumArt,
+            duration: newSong.duration, // 🎵 Include it in response too
             _id: newSong._id,
             collectionId: newSong.collectionId,
         });
@@ -29,7 +32,6 @@ const createSong = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred creating the song!' });
     }
 };
-
 
 // Get all Songs for a given Collection
 const getSongsForCollection = async (req, res) => {
@@ -44,8 +46,7 @@ const getSongsForCollection = async (req, res) => {
             collectionId: collectionId,
         };
 
-        // 🔥 FIX: Add albumArt to what you select
-        const docs = await Song.find(query).select('title artist albumArt collectionId').lean().exec();
+        const docs = await Song.find(query).select('title artist albumArt duration collectionId').lean().exec();
 
         return res.json({ songs: docs });
     } catch (err) {
