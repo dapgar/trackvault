@@ -1,7 +1,7 @@
 const models = require('../models');
 const Collection = models.Collection;
 
-// Create a new Collection
+// create a new Collection
 const createCollection = async (req, res) => {
     if (!req.body.name) {
         return res.status(400).json({ error: 'Collection name is required' });
@@ -34,12 +34,11 @@ const createCollection = async (req, res) => {
     }
 };
 
-// Load all Collections for the logged-in user
+// load all Collections for the logged-in user
 const getCollections = async (req, res) => {
     try {
         const query = { owner: req.session.account._id };
         const docs = await Collection.find(query).select('name description bgColor borderColor').lean().exec();
-        // ⭐ Also pull colors when getting collections
 
         return res.json({ collections: docs });
     } catch (err) {
@@ -48,7 +47,7 @@ const getCollections = async (req, res) => {
     }
 };
 
-// Delete a Collection
+// delete a Collection
 const deleteCollection = async (req, res) => {
     try {
         const collectionId = req.body.id;
@@ -66,7 +65,7 @@ const deleteCollection = async (req, res) => {
     }
 };
 
-// Edit a Collection
+// edit a Collection
 const editCollection = async (req, res) => {
     try {
         const { id, name, description, bgColor, borderColor } = req.body;
@@ -93,13 +92,10 @@ const editCollection = async (req, res) => {
 
 
 
-// Just renders app (frontend handles logic)
 const makerPage = async (req, res) => {
     return res.render('app');
 };
 
-
-// (Editing collections stays the same for now)
 
 module.exports = {
     makerPage,

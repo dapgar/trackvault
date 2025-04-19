@@ -57,7 +57,6 @@ const LoginWindow = (props) => {
                 <input className="formSubmit" type="submit" value="Sign In" />
             </form>
 
-            {/* 🔥 Error message under Login Form */}
             <p id="errorMessage" className="errorText hidden"></p>
         </div>
     );
@@ -82,7 +81,6 @@ const SignupWindow = (props) => {
                 <input className="formSubmit" type="submit" value="Sign Up" />
             </form>
 
-            {/* 🔥 Error message under Signup Form */}
             <p id="errorMessage" className="errorText hidden"></p>
         </div>
     );

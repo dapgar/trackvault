@@ -3,7 +3,7 @@ const React = require('react');
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
 
-// Handle creating a new Collection
+// handle creating a new Collection
 const handleCollection = (e, onCollectionAdded) => {
     e.preventDefault();
     helper.hideError();
@@ -21,6 +21,7 @@ const handleCollection = (e, onCollectionAdded) => {
     return false;
 };
 
+// handles creating a new song 
 const handleSong = async (e, collectionId, onSongAdded) => {
     e.preventDefault();
     helper.hideError();
@@ -34,6 +35,7 @@ const handleSong = async (e, collectionId, onSongAdded) => {
         return false;
     }
 
+    // gets cover art based on title 
     const searchTerm = encodeURIComponent(`${title} ${artist}`);
     const url = `https://itunes.apple.com/search?term=${searchTerm}&entity=song&limit=1`;
 
@@ -67,7 +69,7 @@ const handleSong = async (e, collectionId, onSongAdded) => {
     return false;
 };
 
-// Collection Form
+// Collection form
 const CollectionForm = (props) => (
     <div>
         <form id="collectionForm" onSubmit={(e) => handleCollection(e, props.triggerReload)} name="collectionForm" action="/createCollection" className="collectionForm">
@@ -86,7 +88,7 @@ const CollectionForm = (props) => (
     </div>
 );
 
-// Collection List
+// Collection list 
 const CollectionList = ({ collections, setCollections, reloadCollections, selectCollection, triggerReloadCollections }) => {
     const [editId, setEditId] = useState(null);
     const [editName, setEditName] = useState('');
@@ -145,6 +147,7 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
         return <div className="collectionList"><h3 className="emptyCollection">No Collections Yet</h3></div>;
     }
 
+    // collection nodes here 
     const collectionNodes = collections.map((collection) => (
         <div key={collection._id} className="collection" style={{
             borderColor: collection.borderColor || '#3b73ff'
@@ -174,7 +177,7 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
     return <div className="collectionList">{collectionNodes}</div>;
 };
 
-// Song Form
+// Song form
 const SongForm = (props) => {
     const { collectionId, triggerReload } = props;
     return (
@@ -193,7 +196,7 @@ const SongForm = (props) => {
     );
 };
 
-// Song List
+// Song list
 const SongList = (props) => {
     const { collectionId, reloadSongs } = props;
     const [songs, setSongs] = useState([]);
@@ -282,6 +285,8 @@ const SongList = (props) => {
         return <div className="songList"><h3 className="emptySong">No Songs Yet</h3></div>;
     }
 
+
+    // song nodes here
     const songNodes = songs.map((song) => (
         <div key={song._id} className="song" style={{
             borderColor: song.borderColor || '#3b73ff'
@@ -337,7 +342,7 @@ const SongList = (props) => {
     );
 };
 
-// App
+// app
 const App = () => {
     const [collections, setCollections] = useState([]);
     const [reloadCollections, setReloadCollections] = useState(false);
@@ -388,7 +393,7 @@ const App = () => {
     );
 };
 
-// Initialize App
+// init app
 const init = () => {
     const root = createRoot(document.getElementById('app'));
     root.render(<App />);

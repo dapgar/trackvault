@@ -39,7 +39,7 @@ const SongSchema = new mongoose.Schema({
     },
     borderColor: {
         type: String,
-        default: '#3b73ff', // 🔥 default border color
+        default: '#3b73ff', 
     },
 });
 
@@ -50,7 +50,7 @@ SongSchema.statics.toAPI = (doc) => ({
     duration: doc.duration,
     _id: doc._id,
     collectionId: doc.collectionId,
-    borderColor: doc.borderColor, // 🔥 add this too
+    borderColor: doc.borderColor, 
 });
 
 const SongModel = mongoose.model('Song', SongSchema);

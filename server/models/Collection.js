@@ -17,7 +17,7 @@ const CollectionSchema = new mongoose.Schema({
     },
     borderColor: {
         type: String,
-        default: '#3b73ff', // Default blue accent
+        default: '#3b73ff', // blue accent
     },
     owner: {
         type: mongoose.Schema.ObjectId,

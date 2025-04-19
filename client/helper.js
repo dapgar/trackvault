@@ -2,7 +2,7 @@ const handleError = (message) => {
   const errorElement = document.getElementById('errorMessage');
   if (errorElement) {
     errorElement.textContent = message;
-    errorElement.classList.add('show'); // 🌟 Add show class
+    errorElement.classList.add('show'); 
     errorElement.classList.remove('hidden');
   }
 };
@@ -10,9 +10,9 @@ const handleError = (message) => {
 const hideError = () => {
   const errorElement = document.getElementById('errorMessage');
   if (errorElement) {
-    errorElement.classList.remove('show'); // 🌟 Remove show class
+    errorElement.classList.remove('show'); 
     errorElement.classList.add('hidden');
-    errorElement.textContent = ''; // Clear text
+    errorElement.textContent = ''; 
   }
 };
 
@@ -27,7 +27,7 @@ const sendPost = async (url, data, handler) => {
   });
 
   const result = await response.json();
-  hideError(); // Hide any old errors first
+  hideError();
 
   if (result.redirect) {
     window.location = result.redirect;

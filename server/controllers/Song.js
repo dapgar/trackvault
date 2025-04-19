@@ -12,7 +12,7 @@ const createSong = async (req, res) => {
             artist: req.body.artist,
             albumArt: req.body.albumArt || '',
             duration: req.body.duration || '',
-            borderColor: req.body.borderColor || '#3b73ff', // ✨ NEW
+            borderColor: req.body.borderColor || '#3b73ff', 
             collectionId: req.body.collectionId,
             owner: req.session.account._id,
         };
@@ -25,7 +25,7 @@ const createSong = async (req, res) => {
             artist: newSong.artist,
             albumArt: newSong.albumArt,
             duration: newSong.duration,
-            borderColor: newSong.borderColor, // ✨ Return border color too
+            borderColor: newSong.borderColor, 
             _id: newSong._id,
             collectionId: newSong.collectionId,
         });
@@ -36,7 +36,7 @@ const createSong = async (req, res) => {
 };
 
 
-// Get all Songs for a given Collection
+// get all Songs for a given Collection
 const getSongsForCollection = async (req, res) => {
     try {
         const collectionId = req.query.collectionId;
@@ -58,7 +58,7 @@ const getSongsForCollection = async (req, res) => {
     }
 };
 
-// Delete a Song
+// delete a Song
 const deleteSong = async (req, res) => {
     try {
         const songId = req.body.id;
@@ -76,6 +76,7 @@ const deleteSong = async (req, res) => {
     }
 };
 
+// edit a Song 
 const editSong = async (req, res) => {
     try {
         const { id, title, artist, albumArt, duration, borderColor } = req.body;
