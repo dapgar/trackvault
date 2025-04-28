@@ -1,4 +1,4 @@
-/* ---------- General Page Setup ---------- */
+/* General Page Setup */
 
 html,
 body {
@@ -7,7 +7,7 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    background-color: #121212;
+    background-color: #0d101c;
     color: #e0e0e0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -22,7 +22,7 @@ p {
 #logo {
     height: 40px;
     width: 40px;
-    padding-top: 5px;
+    padding: 5px 0px 0px 10px;
     float: left;
     border-radius: 8px;
 }
@@ -61,7 +61,7 @@ nav {
     display: none;
 }
 
-/* ---------- Main Forms (Login/Signup) ---------- */
+/* Main Forms (Login/Signup) */
 
 .mainForm {
     background-color: #1f2a48;
@@ -111,7 +111,7 @@ nav {
     background-color: #5c8dff;
 }
 
-/* ---------- Collection and Song Cards ---------- */
+/* Collection and Song Cards */
 
 .song {
     background-color: #1f2a48;
@@ -131,7 +131,7 @@ nav {
     background-color: #1f2a48; /* dark background */
     border: 2px solid var(--collection-border, #3b73ff); /* border is customizable */
     border-radius: 12px;
-    padding: 20px;
+    padding: 0 0px 20px 20px;
     margin: 15px auto;
     width: 60%;
     box-shadow: 0px 4px 8px rgba(0,0,0,0.4);
@@ -141,6 +141,9 @@ nav {
 .collection:hover {
     transform: translateY(-4px);
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
+    transition: background-color 0.4s ease;
+    background-color: #253256;
+    cursor:pointer;
 }
 
 /* Color Pickers */
@@ -156,7 +159,7 @@ nav {
     color: #e0e0e0;
 }
 
-/* ---------- Collections ---------- */
+/* Collections */
 
 .collectionName {
     font-size: 1.8em;
@@ -166,11 +169,11 @@ nav {
 }
 
 .collectionDescription {
-    font-size: 1.2em;
+    font-size: 1.1em;
     color: #c7d2e3;
 }
 
-/* ---------- Songs Grid and Cards ---------- */
+/* Songs Grid and Cards */
 
 .songGrid {
     display: grid;
@@ -262,7 +265,7 @@ nav {
     background-color: #5c8dff;
 }
 
-/* ---------- Forms (Other Forms) ---------- */
+/* Forms (Other Forms) */
 
 .collectionForm {
     width: 40%;
@@ -334,7 +337,7 @@ nav {
     background-color: #5c8dff;
 }
 
-/* ---------- Empty Messages ---------- */
+/* Empty Messages */
 
 h3.emptyCollection,
 h3.emptySong {
@@ -347,7 +350,7 @@ h3.emptySong {
 h2, p {
     margin-left: 20px;
 }
-/* ---------- Welcome Message ---------- */
+/* Welcome Message */
 
 #welcomeSection {
     width: 60%;
@@ -366,7 +369,7 @@ h2, p {
     margin-bottom: 20px;
 }
 
-/* ---------- Error Text ---------- */
+/* Error Text */
 
 .errorText {
     color: #e74c3c;
@@ -382,7 +385,7 @@ h2, p {
     opacity: 1;
 }
 
-/* ======== Edit Input Styles ======== */
+/* Edit Input Styles */
 
 .editInput {
     width: 90%;
@@ -393,4 +396,30 @@ h2, p {
     background-color: #2a3658;
     color: #e0e0e0;
     font-size: 1em;
+}
+
+/* Premium Mode Settings */
+
+#premiumToggle {
+    padding: 8px 16px;
+    margin: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.premiumOn {
+    background-color: gold;
+    color: black;
+}
+
+.premiumOff {
+    background-color: gray;
+    color: white;
+}
+
+input[type="color"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }

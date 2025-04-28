@@ -69,10 +69,10 @@ const handleSong = async (e, collectionId, onSongAdded) => {
     return false;
 };
 
-// Collection form
-const CollectionForm = (props) => (
+// collection form
+const CollectionForm = ({ triggerReload, premiumMode }) => (
     <div>
-        <form id="collectionForm" onSubmit={(e) => handleCollection(e, props.triggerReload)} name="collectionForm" action="/createCollection" className="collectionForm">
+        <form id="collectionForm" onSubmit={(e) => handleCollection(e, triggerReload)} name="collectionForm" action="/createCollection" className="collectionForm">
             <label htmlFor="name">Name:</label>
             <input id="collectionName" type="text" name="name" placeholder="My 2025 Favorites" />
 
@@ -80,7 +80,13 @@ const CollectionForm = (props) => (
             <input id="collectionDescription" type="text" name="description" placeholder="Optional description" />
 
             <label htmlFor="borderColor">Border Color:</label>
-            <input id="borderColor" type="color" name="borderColor" defaultValue="#3b73ff" />
+            <input
+                id="borderColor"
+                type="color"
+                name="borderColor"
+                defaultValue="#3b73ff"
+                disabled={!premiumMode}
+            />
 
             <input className="makeCollectionSubmit" type="submit" value="Create Collection" />
         </form>
@@ -88,8 +94,8 @@ const CollectionForm = (props) => (
     </div>
 );
 
-// Collection list 
-const CollectionList = ({ collections, setCollections, reloadCollections, selectCollection, triggerReloadCollections }) => {
+
+const CollectionList = ({ collections, setCollections, reloadCollections, selectCollection, triggerReloadCollections, premiumMode }) => {
     const [editId, setEditId] = useState(null);
     const [editName, setEditName] = useState('');
     const [editDescription, setEditDescription] = useState('');
@@ -147,10 +153,9 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
         return <div className="collectionList"><h3 className="emptyCollection">No Collections Yet</h3></div>;
     }
 
-    // collection nodes here 
     const collectionNodes = collections.map((collection) => (
         <div key={collection._id} className="collection" style={{
-            borderColor: collection.borderColor || '#3b73ff'
+            borderColor: premiumMode ? (collection.borderColor || '#3b73ff') : '#3b73ff'
         }}>
             {editId === collection._id ? (
                 <>
@@ -158,7 +163,12 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
                     <input type="text" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} className="editInput" />
                     <div className="colorPickers">
                         <label>Border:</label>
-                        <input type="color" value={editBorderColor} onChange={(e) => setEditBorderColor(e.target.value)} />
+                        <input
+                            type="color"
+                            value={editBorderColor}
+                            onChange={(e) => setEditBorderColor(e.target.value)}
+                            disabled={!premiumMode}
+                        />
                     </div>
                     <button className="saveButton" onClick={() => handleSaveEdit(collection._id)}>Save</button>
                     <button className="cancelButton" onClick={() => setEditId(null)}>Cancel</button>
@@ -177,9 +187,9 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
     return <div className="collectionList">{collectionNodes}</div>;
 };
 
+
 // Song form
-const SongForm = (props) => {
-    const { collectionId, triggerReload } = props;
+const SongForm = ({ collectionId, triggerReload, premiumMode }) => {
     return (
         <div>
             <form id="songForm" onSubmit={(e) => handleSong(e, collectionId, triggerReload)} name="songForm" className="songForm">
@@ -189,16 +199,21 @@ const SongForm = (props) => {
                 <input id="songArtist" type="text" name="artist" placeholder="The Weeknd" />
                 <input className="makeSongSubmit" type="submit" value="Add Song" />
                 <label htmlFor="songBorderColor">Border Color:</label>
-                <input id="songBorderColor" type="color" name="borderColor" defaultValue="#3b73ff" />
+                <input
+                    id="songBorderColor"
+                    type="color"
+                    name="borderColor"
+                    defaultValue="#3b73ff"
+                    disabled={!premiumMode}
+                />
             </form>
             <p id="errorMessage" className="errorText hidden"></p>
         </div>
     );
 };
 
-// Song list
-const SongList = (props) => {
-    const { collectionId, reloadSongs } = props;
+
+const SongList = ({ collectionId, reloadSongs, premiumMode }) => {
     const [songs, setSongs] = useState([]);
     const [editSongId, setEditSongId] = useState(null);
     const [editedTitle, setEditedTitle] = useState('');
@@ -238,7 +253,6 @@ const SongList = (props) => {
         setEditedArtist(song.artist);
         setEditedBorderColor(song.borderColor || '#3b73ff');
     };
-
 
     const cancelEditing = () => {
         setEditSongId(null);
@@ -285,11 +299,9 @@ const SongList = (props) => {
         return <div className="songList"><h3 className="emptySong">No Songs Yet</h3></div>;
     }
 
-
-    // song nodes here
     const songNodes = songs.map((song) => (
         <div key={song._id} className="song" style={{
-            borderColor: song.borderColor || '#3b73ff'
+            borderColor: premiumMode ? (song.borderColor || '#3b73ff') : '#3b73ff'
         }}>
             <div className="songContent">
                 <img src={song.albumArt} alt={`${song.title} cover`} className="albumArt" />
@@ -314,6 +326,7 @@ const SongList = (props) => {
                                     type="color"
                                     value={editedBorderColor}
                                     onChange={(e) => setEditedBorderColor(e.target.value)}
+                                    disabled={!premiumMode}
                                 />
                             </div>
                             <button className="saveButton" onClick={() => handleSaveEdit(song._id)}>Save</button>
@@ -342,6 +355,7 @@ const SongList = (props) => {
     );
 };
 
+
 // app
 const App = () => {
     const [collections, setCollections] = useState([]);
@@ -349,6 +363,7 @@ const App = () => {
     const [selectedCollection, setSelectedCollection] = useState(null);
     const [reloadSongs, setReloadSongs] = useState(false);
     const [username, setUsername] = useState('');
+    const [premiumMode, setPremiumMode] = useState(false);
 
     const getUsername = async () => {
         const response = await fetch('/getUsername');
@@ -358,7 +373,30 @@ const App = () => {
 
     useEffect(() => {
         getUsername();
+
+        // hook up premium button
+        const premiumButton = document.querySelector('#premiumToggle');
+        if (premiumButton) {
+            premiumButton.onclick = () => setPremiumMode(prev => !prev);
+        }
+
+        // loads premiumMode from localStorage if it exists
+        const savedPremium = localStorage.getItem('premiumMode');
+        if (savedPremium !== null) {
+            setPremiumMode(savedPremium === 'true');
+        }
     }, []);
+
+    useEffect(() => {
+        const premiumButton = document.querySelector('#premiumToggle');
+        if (premiumButton) {
+            premiumButton.innerText = premiumMode ? 'Premium Mode: ON' : 'Premium Mode: OFF';
+            premiumButton.className = premiumMode ? 'premiumOn' : 'premiumOff';
+        }
+
+        // saves premiumMode into localStorage whenever it changes
+        localStorage.setItem('premiumMode', premiumMode);
+    }, [premiumMode]);
 
     if (selectedCollection) {
         return (
@@ -366,8 +404,12 @@ const App = () => {
                 <button id="backToCollectionsButton" onClick={() => setSelectedCollection(null)}>← Back to Collections</button>
                 <h2>{selectedCollection.name}</h2>
                 <p>{selectedCollection.description}</p>
-                <SongForm collectionId={selectedCollection._id} triggerReload={() => setReloadSongs(!reloadSongs)} />
-                <SongList collectionId={selectedCollection._id} reloadSongs={reloadSongs} />
+                <SongForm
+                    collectionId={selectedCollection._id}
+                    triggerReload={() => setReloadSongs(!reloadSongs)}
+                    premiumMode={premiumMode}
+                />
+                <SongList collectionId={selectedCollection._id} reloadSongs={reloadSongs} premiumMode={premiumMode} />
             </div>
         );
     }
@@ -378,7 +420,10 @@ const App = () => {
                 {username && <h1 className="welcomeMessage">Welcome, {username}!</h1>}
             </div>
             <div id="makeCollection">
-                <CollectionForm triggerReload={() => setReloadCollections(!reloadCollections)} />
+                <CollectionForm
+                    triggerReload={() => setReloadCollections(!reloadCollections)}
+                    premiumMode={premiumMode}
+                />
             </div>
             <div id="collections">
                 <CollectionList
@@ -387,11 +432,14 @@ const App = () => {
                     reloadCollections={reloadCollections}
                     triggerReloadCollections={() => setReloadCollections(!reloadCollections)}
                     selectCollection={(collection) => setSelectedCollection(collection)}
+                    premiumMode={premiumMode}
                 />
             </div>
         </div>
     );
 };
+
+
 
 // init app
 const init = () => {
