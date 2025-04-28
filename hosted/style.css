@@ -1,5 +1,4 @@
 /* General Page Setup */
-
 html,
 body {
     height: 100%;
@@ -12,25 +11,30 @@ body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-h2,
-p {
-    margin-left: 10px;
+h2, p {
+    margin-left: 20px;
+    transition: color 0.3s ease;
 }
 
 /* Logo and Navigation */
-
 #logo {
     height: 40px;
     width: 40px;
     padding: 5px 0px 0px 10px;
     float: left;
     border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+#logo:hover {
+    transform: rotate(8deg) scale(1.1);
 }
 
 nav {
     width: 100%;
     height: 50px;
     background-color: #1f2a48;
+    transition: background-color 0.4s ease;
 }
 
 .navlink {
@@ -49,20 +53,20 @@ nav {
     text-decoration: none;
     border-radius: 4px;
     background-color: #1f2a48;
-    transition: background-color 0.4s ease;
     padding: 5px;
+    transition: background-color 0.4s ease, color 0.3s ease;
 }
 
 .navlink a:hover {
     background-color: #3b73ff;
+    color: white;
 }
 
 .hidden {
     display: none;
 }
 
-/* Main Forms (Login/Signup) */
-
+/* Main Forms */
 .mainForm {
     background-color: #1f2a48;
     border: 2px solid #3b73ff;
@@ -75,6 +79,12 @@ nav {
     flex-direction: column;
     gap: 15px;
     text-align: center;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.mainForm:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.6);
+    transform: translateY(-4px);
 }
 
 .mainForm label {
@@ -93,10 +103,17 @@ nav {
     background-color: #2a3658;
     color: #e0e0e0;
     width: 100%;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+.mainForm input[type=text]:focus,
+.mainForm input[type=password]:focus {
+    border-color: #5c8dff;
+    background-color: #324774;
+}
+
+/* Form Submit Button */
 .formSubmit {
-    transition: background-color 0.4s ease;
     background-color: #3b73ff;
     border: none;
     border-radius: 6px;
@@ -105,26 +122,21 @@ nav {
     padding: 10px 16px;
     margin-top: 10px;
     cursor: pointer;
+    transition: background-color 0.4s ease, transform 0.2s ease;
 }
 
 .formSubmit:hover {
     background-color: #5c8dff;
+    transform: translateY(-2px);
 }
 
 /* Collection and Song Cards */
-
 .song {
     background-color: #1f2a48;
-    border: 2px solid #3b73ff;
+    border: 2px solid var(--collection-border, #3b73ff);
     border-radius: 12px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-}
-
-.song:hover {
-    background-color: #2a3658;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
-    transform: translateY(-4px);
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.4);
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease, transform 0.2s ease;
 }
 
 .collection {
@@ -135,15 +147,13 @@ nav {
     margin: 15px auto;
     width: 60%;
     box-shadow: 0px 4px 8px rgba(0,0,0,0.4);
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease, transform 0.2s ease;
 }
 
-.collection:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
-    transition: background-color 0.4s ease;
+.collection:hover, .song:hover {
     background-color: #253256;
-    cursor:pointer;
+    transform: translateY(-4px);
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.6);
 }
 
 /* Color Pickers */
@@ -160,12 +170,12 @@ nav {
 }
 
 /* Collections */
-
 .collectionName {
     font-size: 1.8em;
     font-weight: bold;
     color: white;
     margin-bottom: 10px;
+    transition: color 0.3s ease;
 }
 
 .collectionDescription {
@@ -174,7 +184,6 @@ nav {
 }
 
 /* Songs Grid and Cards */
-
 .songGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -203,7 +212,12 @@ nav {
     height: 180px;
     object-fit: cover;
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.albumArt:hover {
+    transform: scale(1.05);
 }
 
 .songText {
@@ -229,8 +243,7 @@ nav {
     margin-top: 4px;
 }
 
-/* Buttons for delete/edit/save */
-
+/* Buttons */
 .deleteButton {
     background-color: #e74c3c;
     color: white;
@@ -240,12 +253,13 @@ nav {
     font-size: 14px;
     cursor: pointer;
     white-space: nowrap;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: 8px;
 }
 
 .deleteButton:hover {
     background-color: #c0392b;
+    transform: translateY(-2px);
 }
 
 .editButton, .saveButton, .cancelButton {
@@ -258,16 +272,16 @@ nav {
     padding: 6px 12px;
     font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .editButton:hover, .saveButton:hover, .cancelButton:hover {
     background-color: #5c8dff;
+    transform: translateY(-2px);
 }
 
-/* Forms (Other Forms) */
-
-.collectionForm {
+/* Forms */
+.collectionForm, .songForm {
     width: 40%;
     margin: 20px auto;
     padding: 20px;
@@ -278,31 +292,21 @@ nav {
     grid-template-columns: 1fr 2fr;
     gap: 10px 20px;
     align-items: left;
+    transition: box-shadow 0.3s ease;
 }
 
-.songForm {
-    width: 40%;
-    margin: 20px;
-    padding: 20px;
-    border: 2px solid #3b73ff;
-    border-radius: 12px;
-    background-color: #1f2a48;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 10px 20px;
-    align-items: left;
+.collectionForm:hover, .songForm:hover {
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
 }
 
-.collectionForm label,
-.songForm label {
+.collectionForm label, .songForm label {
     font-size: 1.2em;
     color: #e0e0e0;
     text-align: right;
     margin-right: 10px;
 }
 
-.collectionForm input[type=text],
-.songForm input[type=text] {
+.collectionForm input[type=text], .songForm input[type=text] {
     font-size: 1em;
     padding: 8px;
     width: 100%;
@@ -310,12 +314,15 @@ nav {
     border: 1px solid #3b73ff;
     background-color: #2a3658;
     color: #e0e0e0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.makeSongSubmit,
-.makeCollectionSubmit,
-#backToCollectionsButton {
-    transition: background-color 0.4s ease;
+.collectionForm input[type=text]:focus, .songForm input[type=text]:focus {
+    border-color: #5c8dff;
+}
+
+/* Back Button & Submit Buttons */
+.makeSongSubmit, .makeCollectionSubmit, #backToCollectionsButton {
     background-color: #3b73ff;
     border: none;
     border-radius: 6px;
@@ -324,34 +331,25 @@ nav {
     padding: 8px 16px;
     margin-top: 10px;
     cursor: pointer;
+    transition: background-color 0.4s ease, transform 0.2s ease;
     grid-column: span 2;
     justify-self: center;
 }
 
-#backToCollectionsButton {
-    margin-left: 10px;
-}
-
-.makeSongSubmit:hover,
-.makeCollectionSubmit:hover {
+.makeSongSubmit:hover, .makeCollectionSubmit:hover, #backToCollectionsButton:hover {
     background-color: #5c8dff;
+    transform: translateY(-2px);
 }
 
 /* Empty Messages */
-
-h3.emptyCollection,
-h3.emptySong {
+h3.emptyCollection, h3.emptySong {
     text-align: center;
     font-size: 1.5em;
     margin-top: 20px;
     color: #c7d2e3;
 }
 
-h2, p {
-    margin-left: 20px;
-}
 /* Welcome Message */
-
 #welcomeSection {
     width: 60%;
     margin: 20px auto;
@@ -367,10 +365,15 @@ h2, p {
     background-color: #2a3658;
     border-radius: 15px;
     margin-bottom: 20px;
+    transition: box-shadow 0.4s ease, background-color 0.4s ease;
+}
+
+.welcomeMessage:hover {
+    box-shadow: 0px 8px 16px rgba(59, 115, 255, 0.5);
+    background-color: #324774;
 }
 
 /* Error Text */
-
 .errorText {
     color: #e74c3c;
     font-weight: bold;
@@ -386,7 +389,6 @@ h2, p {
 }
 
 /* Edit Input Styles */
-
 .editInput {
     width: 90%;
     margin: 5px 0;
@@ -399,7 +401,6 @@ h2, p {
 }
 
 /* Premium Mode Settings */
-
 #premiumToggle {
     padding: 8px 16px;
     margin: 10px;
@@ -407,6 +408,11 @@ h2, p {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease, transform 0.3s ease;
+}
+
+#premiumToggle:hover {
+    transform: scale(1.05);
 }
 
 .premiumOn {
