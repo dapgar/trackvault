@@ -74,7 +74,7 @@ const CollectionForm = ({ triggerReload, premiumMode }) => (
     <div>
         <form id="collectionForm" onSubmit={(e) => handleCollection(e, triggerReload)} name="collectionForm" action="/createCollection" className="collectionForm">
             <label htmlFor="name">Name:</label>
-            <input id="collectionName" type="text" name="name" placeholder="My 2025 Favorites" />
+            <input id="collectionName" type="text" name="name" placeholder="New collection" />
 
             <label htmlFor="description">Description:</label>
             <input id="collectionDescription" type="text" name="description" placeholder="Optional description" />
@@ -129,6 +129,7 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
         }
     };
 
+    // allows editing of existing collections
     const handleEditCollection = (collection) => {
         setEditId(collection._id);
         setEditName(collection.name);
@@ -157,6 +158,7 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
     }
 
     const collectionNodes = collections.map((collection) => (
+        // actual html here 
         <div key={collection._id} className="collection" style={{
             borderColor: premiumMode ? (collection.borderColor || '#3b73ff') : '#3b73ff',
             boxShadow: `0px 4px 12px ${premiumMode ? (collection.borderColor || '#3b73ff') : '#3b73ff'}80`
@@ -195,16 +197,16 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
 };
 
 
-// Song form
+// song form
 const SongForm = ({ collectionId, triggerReload, premiumMode }) => {
     return (
+        // actual form here 
         <div>
             <form id="songForm" onSubmit={(e) => handleSong(e, collectionId, triggerReload)} name="songForm" className="songForm">
                 <label htmlFor="title">Song Title:</label>
-                <input id="songTitle" type="text" name="title" placeholder="Blinding Lights" />
+                <input id="songTitle" type="text" name="title" placeholder="Insert song title" />
                 <label htmlFor="artist">Artist:</label>
-                <input id="songArtist" type="text" name="artist" placeholder="The Weeknd" />
-                <input className="makeSongSubmit" type="submit" value="Add Song" />
+                <input id="songArtist" type="text" name="artist" placeholder="Insert artist name" />
                 <label htmlFor="borderColor" className="borderColorLabel">
                     Border: <img src="/assets/img/crown.png" alt="Premium" className="premiumCrown" />
                 </label>                <input
@@ -214,6 +216,7 @@ const SongForm = ({ collectionId, triggerReload, premiumMode }) => {
                     defaultValue="#3b73ff"
                     disabled={!premiumMode}
                 />
+                <input className="makeSongSubmit" type="submit" value="Add Song" />
             </form>
             <p id="errorMessage" className="errorText hidden"></p>
         </div>
@@ -228,6 +231,7 @@ const SongList = ({ collectionId, reloadSongs, premiumMode }) => {
     const [editedArtist, setEditedArtist] = useState('');
     const [editedBorderColor, setEditedBorderColor] = useState('#3b73ff');
 
+    // grabs from saved songs
     const loadSongsFromServer = async () => {
         const response = await fetch(`/getSongs?collectionId=${collectionId}`);
         const data = await response.json();
@@ -268,6 +272,7 @@ const SongList = ({ collectionId, reloadSongs, premiumMode }) => {
         setEditedArtist('');
     };
 
+    // allows editing of exisiting songs
     const handleSaveEdit = async (songId) => {
         try {
             const searchTerm = encodeURIComponent(`${editedTitle} ${editedArtist}`);
@@ -308,10 +313,11 @@ const SongList = ({ collectionId, reloadSongs, premiumMode }) => {
     }
 
     const songNodes = songs.map((song) => (
+        // actual html here 
         <div key={song._id} className="song" style={{
             borderColor: premiumMode ? (song.borderColor || '#3b73ff') : '#3b73ff',
             boxShadow: `0px 4px 12px ${premiumMode ? (song.borderColor || '#3b73ff') : '#3b73ff'}80`
-        }}>        
+        }}>
             <div className="songContent">
                 <img src={song.albumArt} alt={`${song.title} cover`} className="albumArt" />
                 <div className="songText">
@@ -407,7 +413,7 @@ const App = () => {
             premiumButton.className = premiumMode ? 'premiumOn' : 'premiumOff';
         }
 
-        // Set body class based on premium
+        // set body class based on premium here
         if (premiumMode) {
             document.body.classList.add('premium-mode');
         } else {

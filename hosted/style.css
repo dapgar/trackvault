@@ -140,6 +140,7 @@ nav {
 }
 
 .collection {
+    cursor: pointer;
     background-color: #1f2a48; /* dark background */
     border: 2px solid var(--collection-border, #3b73ff); /* border is customizable */
     border-radius: 12px;
