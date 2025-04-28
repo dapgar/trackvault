@@ -79,7 +79,10 @@ const CollectionForm = ({ triggerReload, premiumMode }) => (
             <label htmlFor="description">Description:</label>
             <input id="collectionDescription" type="text" name="description" placeholder="Optional description" />
 
-            <label htmlFor="borderColor">Border Color:</label>
+            <label htmlFor="borderColor" className="borderColorLabel">
+                Border: <img src="/assets/img/crown.png" alt="Premium" className="premiumCrown" />
+            </label>
+
             <input
                 id="borderColor"
                 type="color"
@@ -155,14 +158,18 @@ const CollectionList = ({ collections, setCollections, reloadCollections, select
 
     const collectionNodes = collections.map((collection) => (
         <div key={collection._id} className="collection" style={{
-            borderColor: premiumMode ? (collection.borderColor || '#3b73ff') : '#3b73ff'
+            borderColor: premiumMode ? (collection.borderColor || '#3b73ff') : '#3b73ff',
+            boxShadow: `0px 4px 12px ${premiumMode ? (collection.borderColor || '#3b73ff') : '#3b73ff'}80`
         }}>
             {editId === collection._id ? (
                 <>
                     <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} className="editInput" />
                     <input type="text" value={editDescription} onChange={(e) => setEditDescription(e.target.value)} className="editInput" />
                     <div className="colorPickers">
-                        <label>Border:</label>
+                        <label className="borderColorLabel">
+                            Border: <img src="/assets/img/crown.png" alt="Premium" className="premiumCrown" />
+                        </label>
+
                         <input
                             type="color"
                             value={editBorderColor}
@@ -198,8 +205,9 @@ const SongForm = ({ collectionId, triggerReload, premiumMode }) => {
                 <label htmlFor="artist">Artist:</label>
                 <input id="songArtist" type="text" name="artist" placeholder="The Weeknd" />
                 <input className="makeSongSubmit" type="submit" value="Add Song" />
-                <label htmlFor="songBorderColor">Border Color:</label>
-                <input
+                <label htmlFor="borderColor" className="borderColorLabel">
+                    Border: <img src="/assets/img/crown.png" alt="Premium" className="premiumCrown" />
+                </label>                <input
                     id="songBorderColor"
                     type="color"
                     name="borderColor"
@@ -301,8 +309,9 @@ const SongList = ({ collectionId, reloadSongs, premiumMode }) => {
 
     const songNodes = songs.map((song) => (
         <div key={song._id} className="song" style={{
-            borderColor: premiumMode ? (song.borderColor || '#3b73ff') : '#3b73ff'
-        }}>
+            borderColor: premiumMode ? (song.borderColor || '#3b73ff') : '#3b73ff',
+            boxShadow: `0px 4px 12px ${premiumMode ? (song.borderColor || '#3b73ff') : '#3b73ff'}80`
+        }}>        
             <div className="songContent">
                 <img src={song.albumArt} alt={`${song.title} cover`} className="albumArt" />
                 <div className="songText">
@@ -321,7 +330,9 @@ const SongList = ({ collectionId, reloadSongs, premiumMode }) => {
                                 className="editInput"
                             />
                             <div className="colorPickers">
-                                <label>Border:</label>
+                                <label className="borderColorLabel">
+                                    Border: <img src="/assets/img/crown.png" alt="Premium" className="premiumCrown" />
+                                </label>
                                 <input
                                     type="color"
                                     value={editedBorderColor}
@@ -390,13 +401,22 @@ const App = () => {
     useEffect(() => {
         const premiumButton = document.querySelector('#premiumToggle');
         if (premiumButton) {
-            premiumButton.innerText = premiumMode ? 'Premium Mode: ON' : 'Premium Mode: OFF';
+            premiumButton.innerHTML = premiumMode
+                ? 'Premium Mode: ON'
+                : 'Premium Mode: OFF';
             premiumButton.className = premiumMode ? 'premiumOn' : 'premiumOff';
         }
 
-        // saves premiumMode into localStorage whenever it changes
+        // Set body class based on premium
+        if (premiumMode) {
+            document.body.classList.add('premium-mode');
+        } else {
+            document.body.classList.remove('premium-mode');
+        }
+
         localStorage.setItem('premiumMode', premiumMode);
     }, [premiumMode]);
+
 
     if (selectedCollection) {
         return (

@@ -40,7 +40,7 @@ nav {
 .navlink {
     padding: 5px 20px;
     padding-top: 12px;
-    font-size: 1.3em;
+    font-size: 1.2em;
     float: left;
 }
 
@@ -336,6 +336,10 @@ nav {
     justify-self: center;
 }
 
+#backToCollectionsButton {
+    margin-left: 20px;
+}
+
 .makeSongSubmit:hover, .makeCollectionSubmit:hover, #backToCollectionsButton:hover {
     background-color: #5c8dff;
     transform: translateY(-2px);
@@ -368,11 +372,6 @@ h3.emptyCollection, h3.emptySong {
     transition: box-shadow 0.4s ease, background-color 0.4s ease;
 }
 
-.welcomeMessage:hover {
-    box-shadow: 0px 8px 16px rgba(59, 115, 255, 0.5);
-    background-color: #324774;
-}
-
 /* Error Text */
 .errorText {
     color: #e74c3c;
@@ -402,9 +401,10 @@ h3.emptyCollection, h3.emptySong {
 
 /* Premium Mode Settings */
 #premiumToggle {
-    padding: 8px 16px;
-    margin: 10px;
-    font-size: 16px;
+    padding: 5px 20px;
+    margin: 7px;
+    font-size: 1.2em;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -429,3 +429,56 @@ input[type="color"]:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* Premium Mode Background/Theme */
+body.premium-mode {
+    background-color: #161b30;
+    transition: background-color 0.5s ease;
+}
+
+body.premium-mode nav {
+    /*background-color: #2d3a64;*/
+}
+
+body.premium-mode .collection,
+body.premium-mode .song,
+body.premium-mode .mainForm,
+body.premium-mode .collectionForm,
+body.premium-mode .songForm {
+    /*background-color: #263152;*/
+    border-color: gold;
+    box-shadow: 0px 8px 16px rgba(255, 215, 0, 0.4);
+}
+
+body.premium-mode .formSubmit,
+body.premium-mode .makeSongSubmit,
+body.premium-mode .makeCollectionSubmit,
+body.premium-mode .editButton,
+body.premium-mode .saveButton,
+body.premium-mode #backToCollectionsButton {
+    background-color: gold;
+    color: black;
+}
+
+body.premium-mode .deleteButton {
+    background-color: #ff6b6b;
+}
+
+body.premium-mode .deleteButton:hover {
+    background-color: #e55050;
+}
+
+body.premium-mode .welcomeMessage {
+    outline-color: gold;
+    background-color: #2e3d66;
+    box-shadow: 0px 8px 20px rgba(255, 215, 0, 0.3);
+}
+
+.premiumCrown {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+
